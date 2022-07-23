@@ -1,12 +1,16 @@
 import React from "react";
+import { DivPaiCarrinho } from "../style";
 
-function Carrinho(){
+function Carrinho(props){
 
 
     return(
-        <DivPaiCarrinho>
+        <DivPaiCarrinho> 
+            <h3>Carrinho:</h3>
+            <div>
 
-        </DivPaiCarrinho>
+            </div>
+        </DivPaiCarrinho>  
     )
 }
 
