@@ -8,6 +8,7 @@ import Carrinho from "./Carrinho";
 
 function Home(){
 
+    const [itens, setItens] = useState([])
     const [cards] = useState (produtos)
     const [busca, setBusca] = useState ("")
     const [precoMin, setPrecoMin] = useState(-Infinity)
@@ -16,7 +17,9 @@ function Home(){
     const [ordem, setOrdem] = useState("asc")
     
 
-   
+   const handleAddItem = (item)=> {
+    setItens([...itens, item])
+   }
 
     return(
         <DivPai>
@@ -35,13 +38,12 @@ function Home(){
             <DivMain>
 
                 <Label>Ordenar por:</Label>
+                <Label>Ordenar por:</Label>
                 
                 <DivSelect>
                     <Select
                         value={sortNome}
-                        onChange={(ev)=>{setSortNome(ev.target.value)}}
-                    >
-                        <label>Ordenar por:</label>
+                        onChange={(ev)=>{setSortNome(ev.target.value)}}>
                         <option value="nome" >Descrição</option>
                         <option value="valor" >Preço</option>
                     </Select>
@@ -58,14 +60,11 @@ function Home(){
                 <DivPaiCard>
                 
                     {cards.filter((card) => {
-                            return card.nome.toLowerCase().includes(busca.toLowerCase())
+                            return (card.valor >= precoMin || precoMin === "") && 
+                            (card.valor <= precoMax || precoMax === "") &&
+                            (card.nome.toLowerCase().includes(busca.toLowerCase()))
                         })
-                        .filter((card) => {
-                            return card.valor >= precoMin || precoMin === ""
-                        })
-                        .filter((card) => {
-                            return card.valor <= precoMax || precoMax === ""
-                        })
+                        
                         .sort((cardAtual, proximoCard) => {
                             switch(sortNome) {
                                 case "valor":
@@ -82,18 +81,18 @@ function Home(){
                         })
                         .map((card) => {
                             return (
-                                <CardContainer key={card}>
+                                <CardContainer key={card.id}>
                                 <FotoProduto src={card.imagem} alt={'Imagem do produto'}/>
                                 <h4>{card.nome}</h4>
                                 <h2>{card.valor.toLocaleString('pt-br', {style:'currency', currency: 'BRL'})}</h2>
-                                <button>Adicionar ao carrinho</button>
+                                <button onClick={ ()=>{handleAddItem(card)}} >Adicionar ao carrinho</button>
                                 </CardContainer>
                                 )
                         })
                     }
                 </DivPaiCard> 
             </DivMain>
-            <Carrinho/>
+            <Carrinho itens={itens}/>
         </DivPai>   
     )
 }
