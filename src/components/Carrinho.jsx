@@ -7,9 +7,7 @@ function Carrinho(props){
     return(
         <DivPaiCarrinho> 
             <h3>Carrinho:</h3>
-            <div>
-
-            </div>
+            {props.itens.map(item => <p>{item.nome}</p>)}
         </DivPaiCarrinho>  
     )
 }
